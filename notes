@@ -1,0 +1,6 @@
+adsprophet.nu@gmail.com
+ssh -i xpan.pem ec2-user@52.32.112.201 Oregon
+ssh -i korean.pem ec2-user@52.79.87.123 Korean
+ssh -i irish.pem ec2-user@52.18.192.132 Irish
+
+edit Security Group

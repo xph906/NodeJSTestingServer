@@ -1,0 +1,6 @@
+sudo yum install nodejs npm --enablerepo=epel
+sudo yum install git
+
+git clone https://github.com/xph906/NodeJSTestingServer
+cd NodeJSTestingServer
+sudo npm install express --save
