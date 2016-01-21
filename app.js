@@ -142,7 +142,37 @@ app.get('/sleep-2000', function(req, res){
   }, 2000);
 });
 
+//images-large
+app.get('/image-large', function(req, res){
+  var startTime = new Date();
+  setTimeout(function(){ 
+    var img = fs.readFileSync('./images/large.jpg');
+    res.writeHead(200, {'Content-Type': 'image/jpg' });
+    res.end(img, 'binary');
+  
+    //calculate time difference
+    var endTime = new Date();
+    var deltaTime = endTime - startTime;
+    var tag = '/image-large';
+    console.log("processing %s request takes: %dms", tag, deltaTime);
+  }, 2000);
+});
+
+//images-large
+app.get('/image-small', function(req, res){
+  var startTime = new Date();
+  var img = fs.readFileSync('./images/small.jpg');
+  res.writeHead(200, {'Content-Type': 'image/jpg' });
+  res.end(img, 'binary');
+  //calculate time difference
+  var endTime = new Date();
+  var deltaTime = endTime - startTime;
+  var tag = '/image-small';
+  console.log("processing %s request takes: %dms", tag, deltaTime);
+});
+
 //Start listening 3000
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
+  console.log('dir:'+__dirname);
 });
