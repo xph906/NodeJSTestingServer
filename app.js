@@ -1,6 +1,12 @@
 var express = require('express');
 var fs = require('fs');
+var bodyParser = require('body-parser');
 var app = express();
+var multer  = require('multer');
+var upload = multer({ dest: './uploads/'});
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -145,17 +151,28 @@ app.get('/sleep-2000', function(req, res){
 //images-large
 app.get('/image-large', function(req, res){
   var startTime = new Date();
-  setTimeout(function(){ 
-    var img = fs.readFileSync('./images/large.jpg');
-    res.writeHead(200, {'Content-Type': 'image/jpg' });
-    res.end(img, 'binary');
+  var img = fs.readFileSync('./images/large.jpg');
+  res.writeHead(200, {'Content-Type': 'image/jpg' });
+  res.end(img, 'binary');
   
-    //calculate time difference
-    var endTime = new Date();
-    var deltaTime = endTime - startTime;
-    var tag = '/image-large';
-    console.log("processing %s request takes: %dms", tag, deltaTime);
-  }, 2000);
+  //calculate time difference
+  var endTime = new Date();
+  var deltaTime = endTime - startTime;
+  var tag = '/image-large';
+  console.log("processing %s request takes: %dms", tag, deltaTime);
+});
+
+//images-medium
+app.get('/image-medium', function(req, res){
+  var startTime = new Date();
+  var img = fs.readFileSync('./images/medium.jpg');
+  res.writeHead(200, {'Content-Type': 'image/jpg' });
+  res.end(img, 'binary');
+  //calculate time difference
+  var endTime = new Date();
+  var deltaTime = endTime - startTime;
+  var tag = '/image-medium';
+  console.log("processing %s request takes: %dms", tag, deltaTime);
 });
 
 //images-large
@@ -169,6 +186,26 @@ app.get('/image-small', function(req, res){
   var deltaTime = endTime - startTime;
   var tag = '/image-small';
   console.log("processing %s request takes: %dms", tag, deltaTime);
+});
+
+//store image
+app.post('/upload-photo', upload.single('photho'), function(req, res){
+  console.log(req.body) // form fields
+  console.log(req.file) // form files
+  res.status(204).end("file uploaded");
+});
+
+//error
+app.get('/404page', function(req, res){
+  console.log("processing request %s for 404 page",req);
+  res.status(404).end("page not exist");
+});
+
+
+//processing body
+app.post('/post-callinfo', function(request, response){
+  console.log(request.body);      // your JSON
+  response.send("received call info json");    // echo the result back
 });
 
 //Start listening 3000

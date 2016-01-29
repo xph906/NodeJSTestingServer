@@ -4,3 +4,8 @@ sudo yum install git
 git clone https://github.com/xph906/NodeJSTestingServer
 cd NodeJSTestingServer
 sudo npm install express --save
+npm install multer --save
+npm install body-parser --save
+
+
+mkdir uploads
