@@ -15,7 +15,14 @@ app.get('/', function (req, res) {
 //10k
 app.get('/get-small-file', function(req, res) {
   var startTime = new Date();
-  var file = fs.readFileSync('./files/tenk.txt');
+  try{
+    var file = fs.readFileSync('./files/tenk.txt');
+  }
+  catch(e){
+    res.send("get-small-file error "+e);
+    return;
+  }
+  
   var contents = file.toString();
   res.send(contents);
   
@@ -29,8 +36,14 @@ app.get('/get-small-file', function(req, res) {
 
 //1k
 app.get('/get-mini-file', function(req, res) {
-  var startTime = new Date();
-  var file = fs.readFileSync('./files/onek.txt');
+  var startTime = new Date(); 
+  try{
+    var file = fs.readFileSync('./files/onek.txt');
+  }
+  catch(e){
+    res.send("get-mini-file error "+e);
+    return;
+  }
   var contents = file.toString();
   res.send(contents);
   
@@ -45,7 +58,14 @@ app.get('/get-mini-file', function(req, res) {
 //100k
 app.get('/get-medium-file', function(req, res) {
   var startTime = new Date();
-  var file = fs.readFileSync('./files/hundredk.txt');
+  
+  try{
+    var file = fs.readFileSync('./files/hundredk.txt');
+  }
+  catch(e){
+    res.send("get-medium-file error "+e);
+    return;
+  }
   var contents = file.toString();
   res.send(contents);
   
@@ -59,7 +79,14 @@ app.get('/get-medium-file', function(req, res) {
 //1M
 app.get('/get-large-file', function(req, res) {
   var startTime = new Date();
-  var file = fs.readFileSync('./files/onem.txt');
+  
+  try{
+    var file = fs.readFileSync('./files/onem.txt');
+  }
+  catch(e){
+    res.send("get-large-file error "+e);
+    return;
+  }
   var contents = file.toString();
   res.send(contents);
   
@@ -73,7 +100,14 @@ app.get('/get-large-file', function(req, res) {
 //5M
 app.get('/get-huge-file', function(req, res) {
   var startTime = new Date();
-  var file = fs.readFileSync('./files/fivem.txt');
+ 
+  try{
+    var file = fs.readFileSync('./files/fivem.txt');
+  }
+  catch(e){
+    res.send("get-huge-file error "+e);
+    return;
+  }
   var contents = file.toString();
   res.send(contents);
   
@@ -88,15 +122,21 @@ app.get('/get-huge-file', function(req, res) {
 app.get('/sleep-50', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
-  var file = fs.readFileSync('./files/onem.txt');
-  var contents = file.toString();
-  res.send("sleep for 50ms "+contents);
-  
-  //calculate time difference
-  var endTime = new Date();
-  var deltaTime = endTime - startTime;
-  var tag = '/sleep-50';
-  console.log("processing %s request takes: %dms", tag, deltaTime);
+    try{
+      var file = fs.readFileSync('./files/onem.txt');
+    }
+    catch(e){
+      res.send("sleep-50 error "+e);
+      return;
+    }
+    var contents = file.toString();
+    res.send("sleep for 50ms "+contents);
+    
+    //calculate time difference
+    var endTime = new Date();
+    var deltaTime = endTime - startTime;
+    var tag = '/sleep-50';
+    console.log("processing %s request takes: %dms", tag, deltaTime);
   }, 50);
 });
 
@@ -104,14 +144,13 @@ app.get('/sleep-50', function(req, res){
 app.get('/sleep-200', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
-    var file = fs.readFileSync('./files/onem.txt');
-
-   try{
-    var file = fs.readFileSync('./files/onem.txt');
-  }catch(e){
-    res.send("error: "+e);
-    return;
-  }
+    try{
+      var file = fs.readFileSync('./files/onem.txt');
+    }
+    catch(e){
+      res.send("sleep-200 error "+e);
+      return;
+    }
     var contents = file.toString();
     res.send(contents);
   
@@ -127,7 +166,13 @@ app.get('/sleep-200', function(req, res){
 app.get('/sleep-500', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
-    var file = fs.readFileSync('./files/onem.txt');
+    try{
+      var file = fs.readFileSync('./files/onem.txt');
+    }
+    catch(e){
+      res.send("sleep-500 error "+e);
+      return;
+    }
     var contents = file.toString();
     res.send(contents);
   
@@ -143,7 +188,13 @@ app.get('/sleep-500', function(req, res){
 app.get('/sleep-2000', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
-    var file = fs.readFileSync('./files/onem.txt');
+    try{
+      var file = fs.readFileSync('./files/onem.txt');
+    }
+    catch(e){
+      res.send("sleep-2000 error "+e);
+      return;
+    }
     var contents = file.toString();
     res.send(contents);
   
@@ -158,22 +209,16 @@ app.get('/sleep-2000', function(req, res){
 //images-large
 app.get('/image-large', function(req, res){
   var startTime = new Date();
-<<<<<<< HEAD
-  setTimeout(function(){ 
-   try{
-    var img = fs.readFileSync('./files/large.txt');
-  }catch(e){
-    res.send("error: "+e);
+  try{
+   var img = fs.readFileSync('./images/large.jpg');
+  }
+  catch(e){
+    res.send("image-large: "+e);
     return;
   }
-    res.writeHead(200, {'Content-Type': 'image/jpg' });
-    res.end(img, 'binary');
-=======
-  var img = fs.readFileSync('./images/large.jpg');
   res.writeHead(200, {'Content-Type': 'image/jpg' });
   res.end(img, 'binary');
->>>>>>> 2f3ecf10ccd0d4aed43828f47d07d3b3562d3066
-  
+
   //calculate time difference
   var endTime = new Date();
   var deltaTime = endTime - startTime;
@@ -184,9 +229,16 @@ app.get('/image-large', function(req, res){
 //images-medium
 app.get('/image-medium', function(req, res){
   var startTime = new Date();
-  var img = fs.readFileSync('./images/medium.jpg');
+  try{
+   var img = fs.readFileSync('./images/medium.jpg');
+  }
+  catch(e){
+    res.send("image-medium: "+e);
+    return;
+  }
   res.writeHead(200, {'Content-Type': 'image/jpg' });
   res.end(img, 'binary');
+
   //calculate time difference
   var endTime = new Date();
   var deltaTime = endTime - startTime;
@@ -198,13 +250,15 @@ app.get('/image-medium', function(req, res){
 app.get('/image-small', function(req, res){
   var startTime = new Date();
   try{
-    var img = fs.readFileSync('./files/small.txt');
-  }catch(e){
-    res.send("error: "+e);
+   var img = fs.readFileSync('./images/small.jpg');
+  }
+  catch(e){
+    res.send("image-small: "+e);
     return;
   }
   res.writeHead(200, {'Content-Type': 'image/jpg' });
   res.end(img, 'binary');
+
   //calculate time difference
   var endTime = new Date();
   var deltaTime = endTime - startTime;
@@ -212,13 +266,12 @@ app.get('/image-small', function(req, res){
   console.log("processing %s request takes: %dms", tag, deltaTime);
 });
 
-<<<<<<< HEAD
 //load url post
 app.get('/fetch-url', function(req, res) {
   try{
-  var file = fs.readFileSync('./files/urls.txt');
+    var file = fs.readFileSync('./files/urls.txt');
   }catch(e){
-    res.send("error: "+e);
+    res.send("fetch-url error: "+e);
     return ;
   }
   var contents = file.toString();
@@ -234,7 +287,8 @@ app.get('/fetch-url', function(req, res) {
   res.send(JSON.stringify(arr2));
   
   console.log("returned "+arr2.length+" urls" );
-=======
+});
+
 //store image
 app.post('/upload-photo', upload.single('photho'), function(req, res){
   console.log(req.body) // form fields
@@ -253,7 +307,6 @@ app.get('/404page', function(req, res){
 app.post('/post-callinfo', function(request, response){
   console.log(request.body);      // your JSON
   response.send("received call info json");    // echo the result back
->>>>>>> 2f3ecf10ccd0d4aed43828f47d07d3b3562d3066
 });
 
 //Start listening 3000
