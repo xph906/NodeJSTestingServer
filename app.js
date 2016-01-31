@@ -99,6 +99,13 @@ app.get('/sleep-200', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
     var file = fs.readFileSync('./files/onem.txt');
+
+   try{
+    var file = fs.readFileSync('./files/onem.txt');
+  }catch(e){
+    res.send("error: "+e);
+    return;
+  }
     var contents = file.toString();
     res.send(contents);
   
@@ -146,7 +153,12 @@ app.get('/sleep-2000', function(req, res){
 app.get('/image-large', function(req, res){
   var startTime = new Date();
   setTimeout(function(){ 
-    var img = fs.readFileSync('./images/large.jpg');
+   try{
+    var img = fs.readFileSync('./files/large.txt');
+  }catch(e){
+    res.send("error: "+e);
+    return;
+  }
     res.writeHead(200, {'Content-Type': 'image/jpg' });
     res.end(img, 'binary');
   
@@ -161,7 +173,12 @@ app.get('/image-large', function(req, res){
 //images-large
 app.get('/image-small', function(req, res){
   var startTime = new Date();
-  var img = fs.readFileSync('./images/small.jpg');
+  try{
+    var img = fs.readFileSync('./files/small.txt');
+  }catch(e){
+    res.send("error: "+e);
+    return;
+  }
   res.writeHead(200, {'Content-Type': 'image/jpg' });
   res.end(img, 'binary');
   //calculate time difference
@@ -169,6 +186,29 @@ app.get('/image-small', function(req, res){
   var deltaTime = endTime - startTime;
   var tag = '/image-small';
   console.log("processing %s request takes: %dms", tag, deltaTime);
+});
+
+//load url post
+app.get('/fetch-url', function(req, res) {
+  try{
+  var file = fs.readFileSync('./files/urls.txt');
+  }catch(e){
+    res.send("error: "+e);
+    return ;
+  }
+  var contents = file.toString();
+  var arr = contents.split('\n');
+  var arr2 = new Array();
+  for(index in arr){
+    var url = arr[index].trim();
+    var length = url.length;
+    if(length === 0)
+      continue;
+    arr2.push(url);
+  }
+  res.send(JSON.stringify(arr2));
+  
+  console.log("returned "+arr2.length+" urls" );
 });
 
 //Start listening 3000
