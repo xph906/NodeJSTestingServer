@@ -389,6 +389,8 @@ app.post('/measure-bandwidth', function(request, response){
   try{
     var action = query['action'];
     if (action === "ask-permission"){
+      var json = JSON.parse(request.body);
+      console.log("jsob obj:"+json);
       response.send("true");
     }
     else  if (action === "query-server-list"){
