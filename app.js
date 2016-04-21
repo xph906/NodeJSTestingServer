@@ -5,12 +5,18 @@ var app = express();
 var multer  = require('multer');
 var upload = multer({ dest: './uploads/'});
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
+app.use(bodyParser.json({limit: '5mb'}));
 
 app.get('/', function (req, res) {
+  console.log(JSON.stringify(req.headers));
   res.send('Hello World!');
 });
+app.post('/', function (req, res) {
+  console.log("POST:", JSON.stringify(req.headers));
+  res.send('Hello World!');
+});
+
 
 //10k
 app.get('/get-small-file', function(req, res) {
@@ -289,6 +295,75 @@ app.get('/fetch-url', function(req, res) {
   console.log("returned "+arr2.length+" urls" );
 });
 
+app.get('/fetch-dns-testing-url', function(req, res) {
+  try{
+    var file = fs.readFileSync('./files/dns-testing-urls.txt');
+  }catch(e){
+    res.send("fetch-url error: "+e);
+    return ;
+  }
+  var contents = file.toString();
+  var arr = contents.split('\n');
+  var arr2 = new Array();
+  for(index in arr){
+    var url = arr[index].trim();
+    var length = url.length;
+    if(length === 0)
+      continue;
+    arr2.push(url);
+  }
+  res.send(JSON.stringify(arr2));
+  
+  console.log("returned "+arr2.length+" urls" );
+});
+
+app.get('/fetch-china-url', function(req, res) {
+  try{
+    var file = fs.readFileSync('./files/china-urls.txt');
+  }catch(e){
+    res.send("fetchchina-url error: "+e);
+    return ;
+  }
+  var contents = file.toString();
+  var arr = contents.split('\n');
+  var arr2 = new Array();
+  for(index in arr){
+    var url = arr[index].trim();
+    var length = url.length;
+    if(length === 0)
+      continue;
+    arr2.push(url);
+  }
+  res.send(JSON.stringify(arr2));
+  
+  console.log("returned "+arr2.length+" urls" );
+});
+
+
+//load 30 site url post
+app.get('/fetch-test-url', function(req, res) {
+  try{
+    var file = fs.readFileSync('./files/test-urls1.txt');
+  }catch(e){
+    res.send("fetch-url error: "+e);
+    return ;
+  }
+  var contents = file.toString();
+  var arr = contents.split('\n');
+  var arr2 = new Array();
+  for(index in arr){
+    var url = arr[index].trim();
+    var length = url.length;
+    if(length === 0)
+      continue;
+    arr2.push(url);
+  }
+  res.send(JSON.stringify(arr2));
+  
+  console.log("returned "+arr2.length+" urls" );
+});
+
+
 //store image
 app.post('/upload-photo', upload.single('photho'), function(req, res){
   console.log(req.body) // form fields
@@ -306,7 +381,20 @@ app.get('/404page', function(req, res){
 //processing body
 app.post('/post-callinfo', function(request, response){
   console.log(request.body);      // your JSON
+  console.log("appname:"+request.get('X-Application-Name'));
+  console.log("token:"+request.get('X-Token'));
   response.send("received call info json");    // echo the result back
+});
+
+app.get('/conn-testing', function(req, res){
+  var startTime = new Date();
+    res.send("connection succeeded");
+  
+    //calculate time difference
+    var endTime = new Date();
+    var deltaTime = endTime - startTime;
+    var tag = '/conn-tesing';
+    console.log("processing %s request takes: %dms", tag, deltaTime);
 });
 
 //Start listening 3000
