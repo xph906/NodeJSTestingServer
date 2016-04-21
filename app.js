@@ -384,9 +384,25 @@ app.get('/404page', function(req, res){
 app.post('/measure-bandwidth', function(request, response){
   var url_parts = urlmodule.parse(request.url, true);
   var query = url_parts.query;
-  console.log(query);
-  console.log(query['action']);
-  response.send("received call info json");    // echo the result back
+  //console.log(query);
+  //console.log(query['action']);
+  try{
+    var action = query['action'];
+    if (action === "ask-permission"){
+      response.send("true");
+    }
+    else  if (action === "query-server-list"){
+
+    }
+    else if(action === "post-result"){
+      //store data to db.
+    }
+  }
+  catch(e){
+    console.log("error in measure-bandwidth:"+e);
+  }
+  
+  //response.send("received call info json");    // echo the result back
 });
 
 //processing body
