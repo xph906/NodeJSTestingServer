@@ -4,6 +4,8 @@ var bodyParser = require('body-parser');
 var app = express();
 var multer  = require('multer');
 var upload = multer({ dest: './uploads/'});
+var urlmodule = require('url');
+
 
 app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
 app.use(bodyParser.json({limit: '5mb'}));
@@ -377,6 +379,15 @@ app.get('/404page', function(req, res){
   res.status(404).end("page not exist");
 });
 
+
+// bandwidth measurement.
+app.post('/measure-bandwidth', function(request, response){
+  var url_parts = urlmodule.parse(request.url, true);
+  var query = url_parts.query;
+  console.log(query);
+  console.log(query['action']);
+  response.send("received call info json");    // echo the result back
+});
 
 //processing body
 app.post('/post-callinfo', function(request, response){
