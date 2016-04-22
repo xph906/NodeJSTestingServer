@@ -410,6 +410,7 @@ app.post('/measure-bandwidth', function(request, response){
         if(length === 0) continue;
         arr2.push(url);
       }
+      rs['result'] = 'true';
       rs['data'] = JSON.stringify(arr2);
       response.send(JSON.stringify(rs));
     }
