@@ -389,8 +389,8 @@ app.post('/measure-bandwidth', function(request, response){
   try{
     var action = query['action'];
     if (action === "ask-permission"){
-      var json = JSON.parse(request.body);
-      console.log("jsob obj:"+json);
+			console.log(request.body['signalStrength']);
+      console.log("jsob obj:");
       response.send("true");
     }
     else  if (action === "query-server-list"){
@@ -401,7 +401,7 @@ app.post('/measure-bandwidth', function(request, response){
     }
   }
   catch(e){
-    console.log("error in measure-bandwidth:"+e);
+    console.log("error in measure-bandwidth:"+e.stack);
   }
   
   //response.send("received call info json");    // echo the result back
