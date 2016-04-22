@@ -381,7 +381,7 @@ app.get('/404page', function(req, res){
 
 
 // bandwidth measurement.
-app.post('/measure-bandwidth', function(request, response){
+app.post('/measure-bandwidth-cmd', function(request, response){
   var url_parts = urlmodule.parse(request.url, true);
   var query = url_parts.query;
   //console.log(query);
@@ -426,6 +426,26 @@ app.post('/measure-bandwidth', function(request, response){
   }
   
   //response.send("received call info json");    // echo the result back
+});
+
+app.get('/measure-bandwidth', function(req, res) {
+  var startTime = new Date();
+  
+  try{
+    var file = fs.readFileSync('./files/bw-sample.txt');
+  }
+  catch(e){
+    res.send("get-medium-file error "+e);
+    return;
+  }
+  var contents = file.toString();
+  res.send(contents);
+  
+  //calculate time difference
+  var endTime = new Date();
+  var deltaTime = endTime - startTime;
+  var tag = '/get-medium-file';
+  console.log("processing %s request takes: %dms", tag, deltaTime);
 });
 
 //processing body
