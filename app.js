@@ -390,7 +390,7 @@ app.post('/measure-bandwidth', function(request, response){
     'result' : 'false',
     'err_msg' : '',
     'data' : '' };
-    
+
   try{
     var action = query['action'];
     if (action === "ask-permission"){
@@ -400,7 +400,18 @@ app.post('/measure-bandwidth', function(request, response){
       response.send(JSON.stringify(rs));
     }
     else  if (action === "query-server-list"){
-
+      var file = fs.readFileSync('./files/bw-measure-servers.txt');
+      var contents = file.toString();
+      var arr = contents.split('\n');
+      var arr2 = new Array();
+      for(index in arr){
+        var url = arr[index].trim();
+        var length = url.length;
+        if(length === 0) continue;
+        arr2.push(url);
+      }
+      rs['data'] = JSON.stringify(arr2);
+      res.send(JSON.stringify(rs));
     }
     else if(action === "post-result"){
       //store data to db.
