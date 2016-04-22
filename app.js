@@ -411,7 +411,7 @@ app.post('/measure-bandwidth', function(request, response){
         arr2.push(url);
       }
       rs['data'] = JSON.stringify(arr2);
-      res.send(JSON.stringify(rs));
+      response.send(JSON.stringify(rs));
     }
     else if(action === "post-result"){
       //store data to db.
