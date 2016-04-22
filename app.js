@@ -386,12 +386,18 @@ app.post('/measure-bandwidth', function(request, response){
   var query = url_parts.query;
   //console.log(query);
   //console.log(query['action']);
+  var rs = {
+    'result' : 'false',
+    'err_msg' : '',
+    'data' : '' };
+    
   try{
     var action = query['action'];
     if (action === "ask-permission"){
 			console.log(request.body['signalStrength']);
       console.log("jsob obj:");
-      response.send("true");
+      rs['result'] = 'true';
+      response.send(JSON.stringify(rs));
     }
     else  if (action === "query-server-list"){
 
@@ -402,6 +408,9 @@ app.post('/measure-bandwidth', function(request, response){
   }
   catch(e){
     console.log("error in measure-bandwidth:"+e.stack);
+    rs['result'] = 'false';
+    rs['err_msg'] = str(e);
+    response.send(JSON.stringify(rs));
   }
   
   //response.send("received call info json");    // echo the result back
