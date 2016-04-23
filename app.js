@@ -416,6 +416,10 @@ app.post('/measure-bandwidth-cmd', function(request, response){
     }
     else if(action === "post-result"){
       //store data to db.
+      var data = request.body;
+      console.log(data);
+      rs['result'] = 'true';
+      response.send(JSON.stringify(rs));
     }
   }
   catch(e){
