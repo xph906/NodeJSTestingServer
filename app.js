@@ -402,8 +402,9 @@ app.post('/measure-bandwidth-cmd', function(request, response){
   try{
     var action = query['action'];
     if (action === "ask-permission"){
-			console.log(request.body);
-      //console.log("jsob obj:");
+			console.log("1jsob obj:");
+      console.log(request.body);
+      console.log("2jsob obj:");
       rs['result'] = 'true';
       response.send(JSON.stringify(rs));
     }
