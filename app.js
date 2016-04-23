@@ -403,10 +403,11 @@ app.post('/measure-bandwidth-cmd', function(request, response){
     var action = query['action'];
     if (action === "ask-permission"){
 			console.log("1jsob obj:");
-      console.log(request.body);
+      //console.log(request.body);
       console.log("2jsob obj:");
       rs['result'] = 'true';
-      response.send(JSON.stringify(rs));
+      //response.send(JSON.stringify(rs));
+      response.send('1');
     }
     else  if (action === "query-server-list"){
       var file = fs.readFileSync('./files/bw-measure-servers.txt');
