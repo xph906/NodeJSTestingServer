@@ -1,11 +1,13 @@
-var express = require('express');
+subvar express = require('express');
 var fs = require('fs');
 var bodyParser = require('body-parser');
 var app = express();
 var multer  = require('multer');
 var upload = multer({ dest: './uploads/'});
 var urlmodule = require('url');
-
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/netprophet');
 
 app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
 app.use(bodyParser.json({limit: '5mb'}));
@@ -418,7 +420,36 @@ app.post('/measure-bandwidth-cmd', function(request, response){
       //store data to db.
       var data = request.body;
       console.log(data);
-      rs['result'] = 'true';
+
+      //store contents to db
+      try {
+        var collection = db.get('bandwidth');
+        collection.insert({
+          userID : data['userID'],
+          networkName : data['networkName'],
+          networkType : data['networkType'],
+          signalStrength : data['signalStrength'],
+          serverPingVal : data['serverPingVal'],
+          server : data['server'],
+          bandwidth : data['bandwidth']
+        }, 
+        function (err, doc) {
+          if (err) {
+            console.log("[FAIL] failed to insert bandwidth data into DB: "
+              +err+" \n  data:"+data);
+            rs['result'] = 'false';
+            rs['err_msg'] = err;
+          }
+          else {
+            console.log("[SUCC] succeeded installing bandwidth data into DB");
+            rs['result'] = 'true';
+          }});
+      }
+      catch (e) {
+        console.log("[FAIL] failed to insert distance into DB "+e);
+        rs['result'] = 'false';
+        rs['err_msg'] = e;
+      }
       response.send(JSON.stringify(rs));
     }
   }
@@ -470,6 +501,10 @@ app.get('/conn-testing', function(req, res){
     var tag = '/conn-tesing';
     console.log("processing %s request takes: %dms", tag, deltaTime);
 });
+
+//=====functions======
+
+
 
 //Start listening 3000
 app.listen(3000, function () {
