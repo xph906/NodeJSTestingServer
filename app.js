@@ -9,8 +9,14 @@ var mongo = require('mongodb');
 var monk = require('monk');
 var db = monk('localhost:27017/netprophet');
 
-app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
-app.use(bodyParser.json({limit: '5mb'}));
+try{
+  app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }));
+  app.use(bodyParser.json({limit: '5mb'}));
+}
+catch(e){
+  console.log(e);
+}
+
 
 app.get('/', function (req, res) {
   console.log(JSON.stringify(req.headers));
