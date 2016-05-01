@@ -437,7 +437,8 @@ app.post('/measure-bandwidth-cmd', function(request, response){
           signalStrength : data['signalStrength'],
           serverPingVal : data['serverPingVal'],
           server : data['server'],
-          bandwidth : data['bandwidth']
+          bandwidth : data['bandwidth'],
+          phoneModel : data['phoneModel']
         }, 
         function (err, doc) {
           if (err) {
@@ -491,10 +492,50 @@ app.get('/measure-bandwidth', function(req, res) {
 
 //processing body
 app.post('/post-callinfo', function(request, response){
-  console.log(request.body);      // your JSON
+  //console.log(request.body);      // your JSON
   console.log("appname:"+request.get('X-Application-Name'));
   console.log("token:"+request.get('X-Token'));
   response.send("received call info json");    // echo the result back
+  var body = request.body;
+  if (body==null || body.length == 0){
+    console.log("empty post body.");
+    return ;
+  }
+  var elem = body[0];
+
+  if (elem.hasOwnProperty('userID')){
+    var count = 0;
+    try {
+      var collection = db.get('requests');
+      for(var i in body){
+        var data = body[i];
+        collection.insert({
+          userID : data['userID'],
+          url : data['url'],
+          method : data['method'],
+          reqID : data['reqID'],
+          transID : data['transID'],
+          nextReqID : data['nextReqID'],
+          prevReqID : data['prevReqID'],
+          HTTPCode : data['HTTPCode']}, 
+          function (err, doc) {
+            if (err) 
+              console.log("error inserting data to database: "+err);
+            else 
+              count++;              
+          });
+      }//for
+    }
+    catch(e){
+      console.log("error: "+e);
+      res.status(500).end("failed to insert data to database");
+    }
+    console.log("succeeded inserting "+count+"/"+body.length+
+      " items into database");
+    res.status(200).end("succeeded inserting data to database");
+  }
+  console.log("ignore networking data");
+  res.status(200).end("");
 });
 
 app.get('/conn-testing', function(req, res){
