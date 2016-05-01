@@ -504,7 +504,8 @@ app.post('/post-callinfo', function(request, response){
   var elem = body[0];
 
   if (elem.hasOwnProperty('userID')){
-    var count = 0;
+    var succCount = 0;
+    var failedCount = 0;
     try {
       var collection = db.get('requests');
       for(var i in body){
@@ -519,11 +520,18 @@ app.post('/post-callinfo', function(request, response){
           prevReqID : data['prevReqID'],
           HTTPCode : data['HTTPCode']}, 
           function (err, doc) {
-            if (err) 
+            if (err){
               console.log("error inserting data to database: "+err);
+              failedCount++;
+            }
             else {
-              console.log("succeeded inserting data");
-              count++;              
+              succCount++;   
+              if(succCount+failedCount >= body.length){
+                console.log("succeeded inserting "+succCount+"/"+body.length+
+                  " items into database");
+                response.status(200).end("succeeded inserting data to database");
+                return ;
+              }           
             }
           });
       }//for
@@ -531,10 +539,9 @@ app.post('/post-callinfo', function(request, response){
     catch(e){
       console.log("error: "+e);
       response.status(500).end("failed to insert data to database");
+      return ;
     }
-    console.log("succeeded inserting "+count+"/"+body.length+
-      " items into database");
-    response.status(200).end("succeeded inserting data to database");
+    return ;
   }
   console.log("ignore networking data");
   response.status(200).end("");
