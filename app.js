@@ -528,14 +528,14 @@ app.post('/post-callinfo', function(request, response){
     }
     catch(e){
       console.log("error: "+e);
-      res.status(500).end("failed to insert data to database");
+      response.status(500).end("failed to insert data to database");
     }
     console.log("succeeded inserting "+count+"/"+body.length+
       " items into database");
-    res.status(200).end("succeeded inserting data to database");
+    response.status(200).end("succeeded inserting data to database");
   }
   console.log("ignore networking data");
-  res.status(200).end("");
+  response.status(200).end("");
 });
 
 app.get('/conn-testing', function(req, res){
