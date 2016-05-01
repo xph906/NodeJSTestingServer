@@ -521,8 +521,10 @@ app.post('/post-callinfo', function(request, response){
           function (err, doc) {
             if (err) 
               console.log("error inserting data to database: "+err);
-            else 
+            else {
+              console.log("succeeded inserting data");
               count++;              
+            }
           });
       }//for
     }
@@ -536,6 +538,7 @@ app.post('/post-callinfo', function(request, response){
   }
   console.log("ignore networking data");
   response.status(200).end("");
+  console.log("");
 });
 
 app.get('/conn-testing', function(req, res){
