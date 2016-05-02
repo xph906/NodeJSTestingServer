@@ -493,8 +493,15 @@ app.get('/measure-bandwidth', function(req, res) {
 //processing body
 app.post('/post-callinfo', function(request, response){
   //console.log(request.body);      // your JSON
+  
+  var ip = request.headers['x-forwarded-for'] || 
+     request.connection.remoteAddress || 
+     request.socket.remoteAddress ||
+     request.connection.socket.remoteAddress;
+  console.log("receive request: "+ip); 
   console.log("appname:"+request.get('X-Application-Name'));
   console.log("token:"+request.get('X-Token'));
+  
   response.status(200).end("done");
   
   var body = request.body;
