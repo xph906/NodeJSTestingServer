@@ -1,0 +1,11 @@
+db.requests.aggregate(
+   { $group: { 
+        _id: { reqID: "$reqID", userID: "$userID" },
+		count: { $sum:  1 }
+    }},
+    { $match: {
+        count: { $gt : 1 }
+    }}
+)
+
+//_id: { reqID: "$reqID", userID: "$userID" },
