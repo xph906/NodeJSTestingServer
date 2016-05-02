@@ -492,7 +492,7 @@ app.get('/measure-bandwidth', function(req, res) {
 
 //processing body
 app.post('/post-callinfo', function(request, response){
-  //console.log(request.body);      // your JSON
+  console.log(request.body);      // your JSON
   console.log("appname:"+request.get('X-Application-Name'));
   console.log("token:"+request.get('X-Token'));
   response.send("received call info json");    // echo the result back
@@ -503,7 +503,7 @@ app.post('/post-callinfo', function(request, response){
   }
   var elem = body[0];
 
-  if (elem.hasOwnProperty('userID')){
+  if (elem.hasOwnProperty('overallDelay')){
     var succCount = 0;
     var failedCount = 0;
     try {

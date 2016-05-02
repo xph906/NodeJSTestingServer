@@ -5,7 +5,8 @@ db.requests.aggregate(
     }},
     { $match: {
         count: { $gt : 1 }
-    }}
+    }},
+    {"$project": {"name" : "$url"} }
 )
 
 //_id: { reqID: "$reqID", userID: "$userID" },
