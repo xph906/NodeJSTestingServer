@@ -492,10 +492,11 @@ app.get('/measure-bandwidth', function(req, res) {
 
 //processing body
 app.post('/post-callinfo', function(request, response){
-  console.log(request.body);      // your JSON
+  //console.log(request.body);      // your JSON
   console.log("appname:"+request.get('X-Application-Name'));
   console.log("token:"+request.get('X-Token'));
-  response.send("received call info json");    // echo the result back
+  response.status(200).end("done");
+  
   var body = request.body;
   if (body==null || body.length == 0){
     console.log("empty post body.");
@@ -529,7 +530,7 @@ app.post('/post-callinfo', function(request, response){
               if(succCount+failedCount >= body.length){
                 console.log("succeeded inserting "+succCount+"/"+body.length+
                   " items into database");
-                response.status(200).end("succeeded inserting data to database");
+                //response.status(200).end("succeeded inserting data to database");
                 return ;
               }           
             }
@@ -538,13 +539,13 @@ app.post('/post-callinfo', function(request, response){
     }
     catch(e){
       console.log("error: "+e);
-      response.status(500).end("failed to insert data to database");
+      //response.status(500).end("failed to insert data to database");
       return ;
     }
     return ;
   }
   console.log("ignore networking data");
-  response.status(200).end("");
+  //response.status(200).end("");
   console.log("");
 });
 
