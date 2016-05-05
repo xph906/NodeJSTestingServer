@@ -373,6 +373,40 @@ app.get('/fetch-test-url', function(req, res) {
   console.log("returned "+arr2.length+" urls" );
 });
 
+app.get('/fetch-measurement-url', function(req, res) {
+  var url_parts = urlmodule.parse(request.url, true);
+  var query = url_parts.query;
+  var file = null;
+  if(!query['domain']){
+    res.status(500).end("domain is not specified.");
+    return ;
+  }
+
+  //file name: e.g., bbc.com.txt
+  var filename = query['domain']toLowerCase().trim()+'.txt';
+
+  try{
+    var file = fs.readFileSync('./files/'+filename);
+  }catch(e){
+    res.status(500).end("failed to open domain file.");
+    return ;
+  }
+
+  var contents = file.toString();
+  var arr = contents.split('\n');
+  var arr2 = new Array();
+  for(index in arr){
+    var url = arr[index].trim();
+    var length = url.length;
+    if(length === 0)
+      continue;
+    arr2.push(url);
+  }
+  res.status(200).send(JSON.stringify(arr2));
+  
+  console.log("returned "+arr2.length+" "+query['domain']+" urls" );
+});
+
 
 //store image
 app.post('/upload-photo', upload.single('photho'), function(req, res){
