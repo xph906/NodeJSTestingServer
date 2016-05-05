@@ -1,0 +1,4 @@
+scrapy runspider spider.py > domain.txt
+python netprophetProcessURL.py domain.txt > domain_.txt
+./removeRedirectionURL.sh domain_.txt > domain.txt
+
