@@ -374,7 +374,7 @@ app.get('/fetch-test-url', function(req, res) {
 });
 
 app.get('/fetch-measurement-url', function(req, res) {
-  var url_parts = urlmodule.parse(request.url, true);
+  var url_parts = urlmodule.parse(req.url, true);
   var query = url_parts.query;
   var file = null;
   if(!query['domain']){
