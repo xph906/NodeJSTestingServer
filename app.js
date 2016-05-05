@@ -383,7 +383,7 @@ app.get('/fetch-measurement-url', function(req, res) {
   }
 
   //file name: e.g., bbc.com.txt
-  var filename = query['domain']toLowerCase().trim()+'.txt';
+  var filename = query['domain'].toLowerCase().trim()+'.txt';
 
   try{
     var file = fs.readFileSync('./files/'+filename);
@@ -539,7 +539,7 @@ app.post('/post-callinfo', function(request, response){
   response.status(200).end("done");
   
   var body = request.body;
-  if (body==null || body.length == 0){
+  if (!body || body.length == 0){
     console.log("empty post body.");
     return ;
   }
